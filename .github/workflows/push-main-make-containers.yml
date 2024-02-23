@@ -1,0 +1,40 @@
+name: Makefile and push container
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  PODMAN_USER: ${{ secrets.PODMAN_USER }}
+  PODMAN_PASSWORD: ${{ secrets.PODMAN_PASSWORD }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: setup qemu-user-static
+      run: sudo apt-get install -y --no-install-recommends qemu binfmt-support qemu-user-static
+
+    - name: Log in to Quay.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.PODMAN_USER }}
+        password: ${{ env.PODMAN_PASSWORD }}
+        registry: quay.io
+
+    - name: arm64 container
+      run: make .container-arm64
+
+    - name: amd64 container
+      run: make .container-amd64
+
+    - name: Multiarch Manifest
+      run: make container-multiarch
+
+    - name: push image
+      run: make push-multiarch-container
