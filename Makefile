@@ -13,6 +13,7 @@ GIT_REF=$(shell git rev-parse --short HEAD)
 	touch .container-amd64
 
 .container-multiarch: .container-arm64 .container-amd64
+	podman manifest rm $(IMAGE):$(TAG) || true
 	podman manifest create $(IMAGE):$(TAG) \
 					containers-storage:$(IMAGE):$(TAG)-arm64 \
 					containers-storage:$(IMAGE):$(TAG)-amd64

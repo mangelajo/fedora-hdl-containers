@@ -6,7 +6,8 @@ RUN microdnf install -y --setopt=install_weak_deps=False --best  \
         dfu-util \
         #COCOTB INSTALL         
         make python3-pip python3-devel python-pytest \
-        gcc g++ libstdc++-devel \
-        clang clang15 
+        gcc g++ libstdc++-devel libstdc++-static \
+        clang clang15 \
+        ghdl iverilog verilator
 
-# ghdl iverilog verilator
+RUN pip3 install cocotb
