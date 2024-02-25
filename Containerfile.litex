@@ -1,0 +1,21 @@
+FROM quay.io/mangelajo/fedora-hdl-tools:latest
+RUN microdnf install -y --setopt=install_weak_deps=False --best  \   
+        # openJDK for VexRISC generation
+        java-1.8.0-openjdk-devel \
+        # ninja
+        ninja-build \
+        # git for litex_setup.py
+        git
+        #
+
+RUN curl -L https://www.scala-sbt.org/sbt-rpm.repo -o /etc/yum.repos.d/sbt-rpm.repo && \
+    microdnf -y install sbt
+
+RUN curl https://raw.githubusercontent.com/enjoy-digital/litex/master/litex_setup.py -o litex_setup.py && \
+    python3 litex_setup.py --init --install
+
+
+#RUN python3 litex_setup.py --gcc=riscv 
+RUN microdnf install -y gcc-riscv64-linux-gnu
+
+RUN pip3 install meson
