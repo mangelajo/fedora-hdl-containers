@@ -16,6 +16,6 @@ RUN curl https://raw.githubusercontent.com/enjoy-digital/litex/master/litex_setu
 
 
 #RUN python3 litex_setup.py --gcc=riscv 
-RUN microdnf install -y gcc-riscv64-linux-gnu
+RUN microdnf install -y gcc-riscv64-linux-gnu dtc
 
 RUN pip3 install meson
